@@ -29,6 +29,13 @@ export const goodsApi = createApi({
 				method: 'POST',
 				body: { action: 'get_ids', params }
 			})
+			// transformResponse: (response: IServerResponse<IIds>) => {
+			// 	if (response.result) {
+			// 		const uniqueIds = [...new Set(response.result)]
+			// 		return {...response, result: uniqueIds}
+			// 	}
+			// 	return response
+			// }
 		}),
 		getItems: build.query<IServerResponse<IItems[]>, IIds | undefined>({
 			query: params => ({
@@ -36,8 +43,15 @@ export const goodsApi = createApi({
 				method: 'POST',
 				body: { action: 'get_items', params }
 			})
+		}),
+		getFields: build.query<IServerResponse<IIds>, void>({
+			query: () => ({
+				url: `/`,
+				method: 'POST',
+				body: { action: 'get_fields' }
+			})
 		})
 	})
 })
 
-export const { useGetIdsQuery, useGetItemsQuery } = goodsApi
+export const { useGetIdsQuery, useGetItemsQuery, useGetFieldsQuery } = goodsApi
