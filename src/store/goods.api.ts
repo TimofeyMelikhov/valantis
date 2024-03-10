@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import md5 from 'md5'
 import {
-	IFilterForIds,
+	GetItemsParams,
+	IFilterForIds, // IFilterResponse,
 	IIds,
 	IItems,
 	IServerResponse
@@ -29,29 +30,47 @@ export const goodsApi = createApi({
 				method: 'POST',
 				body: { action: 'get_ids', params }
 			})
-			// transformResponse: (response: IServerResponse<IIds>) => {
-			// 	if (response.result) {
-			// 		const uniqueIds = [...new Set(response.result)]
-			// 		return {...response, result: uniqueIds}
-			// 	}
-			// 	return response
-			// }
 		}),
-		getItems: build.query<IServerResponse<IItems[]>, IIds | undefined>({
+		getItems: build.query<IServerResponse<IItems[]>, GetItemsParams>({
 			query: params => ({
 				url: `/`,
 				method: 'POST',
-				body: { action: 'get_items', params }
-			})
-		}),
-		getFields: build.query<IServerResponse<IIds>, void>({
-			query: () => ({
-				url: `/`,
-				method: 'POST',
-				body: { action: 'get_fields' }
+				body: {
+					action: 'get_items',
+					params
+				}
 			})
 		})
+		// getFields: build.query<IFilterResponse, void>({
+		// 	query: () => ({
+		// 		url: `/`,
+		// 		method: 'POST',
+		// 		body: { action: 'get_fields', params: { field: 'brand' } }
+		// 	}),
+		// 	transformResponse: (response: IFilterResponse) => {
+		// 		if (response.result) {
+		// 			const filteredResult = response.result.filter(
+		// 				(item: string | null) => item !== null
+		// 			)
+		// 			return { ...response, result: Array.from(new Set(filteredResult)) }
+		// 		} else {
+		// 			return response
+		// 		}
+		// 	}
+		// }),
+		// getFilteredItems: build.query<IServerResponse<IIds>, string>({
+		// 	query: field => ({
+		// 		url: '/',
+		// 		method: 'POST',
+		// 		body: { action: 'filter', params: { brand: field } }
+		// 	})
+		// })
 	})
 })
 
-export const { useGetIdsQuery, useGetItemsQuery, useGetFieldsQuery } = goodsApi
+export const {
+	useGetIdsQuery,
+	useGetItemsQuery
+	// useGetFieldsQuery,
+	// useLazyGetFilteredItemsQuery
+} = goodsApi

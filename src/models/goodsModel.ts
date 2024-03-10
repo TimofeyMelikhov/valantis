@@ -3,7 +3,7 @@ export interface IServerResponse<T> {
 }
 
 export interface IIds {
-	result: string[]
+	result: string[] | undefined
 }
 
 export interface IFilterForIds {
@@ -11,9 +11,15 @@ export interface IFilterForIds {
 	limit: number
 }
 
+export interface IFilterResponse extends IServerResponse<string[]> {}
+
 export interface IItems {
 	brand: string | null
 	id: string
 	price: number
 	product: string
+}
+
+export interface GetItemsParams {
+	ids: IIds | undefined
 }
